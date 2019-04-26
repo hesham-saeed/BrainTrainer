@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "507113960237",
+    "firebase_url": "https://braintrainer-a9fdc.firebaseio.com",
+    "project_id": "braintrainer-a9fdc",
+    "storage_bucket": "braintrainer-a9fdc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507113960237:android:98921952094f5da9",
+        "android_client_info": {
+          "package_name": "com.example.braintrainer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507113960237-26gpfqp4i7nvjof4dqn05dehgn2ba9fh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.braintrainer",
+            "certificate_hash": "6879bfc1077b4397b3393291cea4ffb4c3dbece3"
+          }
+        },
+        {
+          "client_id": "507113960237-q4h1smccgis5b5o1e2jvddoqlu1013fr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfWuPQeOnkRUz-4loRai8HNhCZDWJav4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507113960237-q4h1smccgis5b5o1e2jvddoqlu1013fr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

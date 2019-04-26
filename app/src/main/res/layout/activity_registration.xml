@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".RegistrationActivity">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/registration_title"
+        android:textAlignment="center"
+        android:textSize="32sp" />
+
+    <EditText
+        android:id="@+id/et_reg_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/rectangle_edit_text"
+        android:ems="10"
+        android:hint="Full name"
+        android:padding="8dp"
+        android:typeface="sans" />
+
+    <EditText
+        android:id="@+id/et_reg_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/rectangle_edit_text"
+        android:ems="10"
+        android:hint="Email"
+        android:padding="8dp" />
+
+    <EditText
+        android:id="@+id/et_reg_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/rectangle_edit_text"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="8dp" />
+
+    <Button
+        android:textAllCaps="false"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:id="@+id/btn_reg_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/grey_rectangle_button"
+        android:text="Register" />
+    <ProgressBar
+        android:id="@+id/reg_progress_bar"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

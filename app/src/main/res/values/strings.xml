@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Brain Trainer</string>
+    <string name="register"><u>Register</u></string>
+    <string name="registration_title">Brainer\nRegistration</string>
+</resources>
