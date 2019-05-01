@@ -51,6 +51,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
         });
 
         leaderBoardRecyclerView = findViewById(R.id.rv_leaderboard);
+        leaderBoardRecyclerView.setHasFixedSize(true);
 
         leaderBoardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
