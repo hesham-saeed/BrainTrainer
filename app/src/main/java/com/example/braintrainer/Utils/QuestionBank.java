@@ -1,4 +1,4 @@
-package com.example.braintrainer;
+package com.example.braintrainer.Utils;
 
 import java.util.Random;
 
@@ -10,7 +10,7 @@ public class QuestionBank {
     private static final int HARD_MODE_MIN = 500;
     private static final int HARD_MODE_MAX = 1999;
 
-    int[] generateTwoNumbers(String mode) {
+    public int[] generateTwoNumbers(String mode) {
         int[] arr = new int[2];
 
         Random rand = new Random();
@@ -28,7 +28,7 @@ public class QuestionBank {
         return arr;
     }
 
-    int[] generateAnswers(int num1, int num2, String operation) {
+    public int[] generateAnswers(int num1, int num2, String operation) {
         int[] answers = new int[4];
 
         Random rand = new Random();
@@ -55,7 +55,7 @@ public class QuestionBank {
         return answers;
     }
 
-    boolean checkAnswers(int num1, int num2, int ans, String operation) {
+    public boolean checkAnswers(int num1, int num2, int ans, String operation) {
         if (operation.equals("add"))
             return num1 + num2 == ans;
         else if (operation.equals("subtract"))

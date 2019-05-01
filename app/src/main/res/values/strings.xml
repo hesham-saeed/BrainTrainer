@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">Brain Trainer</string>
+    <string name="app_name">Brainer</string>
     <string name="register"><u>Register</u></string>
     <string name="registration_title">Brainer\nRegistration</string>
+    <string name="profile_user_score_text_message">Your best score is <b>%1$s</b></string>
+    <string name="go">BREAK IT!</string>
+    <string name="taunt_message">Shall we break it?</string>
+    <string name="play_offline">Play\nOffline</string>
+    <string name="play_again">Play\nagain</string>
+    <string name="log_out">LOG OUT</string>
 </resources>

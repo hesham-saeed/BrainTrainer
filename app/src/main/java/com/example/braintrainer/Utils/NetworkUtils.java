@@ -1,4 +1,4 @@
-package com.example.braintrainer;
+package com.example.braintrainer.Utils;
 
 import android.content.Context;
 

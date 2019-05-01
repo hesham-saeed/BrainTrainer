@@ -1,19 +1,23 @@
 package com.example.braintrainer;
 
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;
+import com.example.braintrainer.Model.User;
+import com.example.braintrainer.Utils.QuestionBank;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,13 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+public class GameActivity extends AppCompatActivity {
+    private static final String TAG = "GameActivity";
     private static final int GAME_TIME = 30000;
     private static final int TIMER_INTERVAL = 1000;
 
@@ -40,17 +42,19 @@ public class MainActivity extends AppCompatActivity {
     private Button thirdQuestionButton;
     private Button fourthQuestionButton;
     private Button playAgainButton;
-    private FrameLayout gameOverFrameLayout;
     private TextView finalScoreTextView;
     private TextView answerTextView;
     private GridLayout answersGridButtons;
-    private String storedScore;
+    private int storedScore;
+    private int storedGamesPlayed;
+    private Button leaderBoardButton;
 
     private CountDownTimer countDownTimer;
 
     private QuestionBank questionBank = new QuestionBank();
 
     private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
 
     private int score;
     private int questionCount;
@@ -58,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         scoreTextView = findViewById(R.id.scoreTextView);
         timerTextView = findViewById(R.id.timerTextView);
@@ -68,55 +78,90 @@ public class MainActivity extends AppCompatActivity {
         secondQuestionButton = findViewById(R.id.secondNumberButton);
         thirdQuestionButton = findViewById(R.id.thirdNumberButton);
         fourthQuestionButton = findViewById(R.id.fourthNumberButton);
-        gameOverFrameLayout = findViewById(R.id.gameOverFrameLayout);
         answerTextView = findViewById(R.id.answerTextView);
         answersGridButtons = findViewById(R.id.answersGridLayout);
+        leaderBoardButton = findViewById(R.id.leaderBoardButton);
+        Typeface firaMonoFont = Typeface.createFromAsset(getAssets(), "fonts/fira-mono-bold.otf");
+        answerTextView.setTypeface(firaMonoFont);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        leaderBoardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+                    builder.setMessage("You must be logged in");
+                    builder.setPositiveButton("OK", null);
+                    builder.create().show();
+                } else {
+                    Intent intent = new Intent(GameActivity.this, LeaderBoardActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
         initializeGame();
+        final AlphaAnimation buttonClickAnimation = new AlphaAnimation(1F, 0.7F);
 
         playAgainButton = findViewById(R.id.playAgainButton);
         playAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                playAgainButton.startAnimation(buttonClickAnimation);
                 initializeGame();
             }
         });
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("leaderboard");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String score = (String) dataSnapshot.child(FirebaseAuth.getInstance().getUid()).getValue();
-                    Log.d(TAG, "Firebase score " + score);
-                    storedScore = score;
+                    String uid = FirebaseAuth.getInstance().getUid();
+                    if (uid != null) {
+                        User userInfo = dataSnapshot.child(uid).getValue(User.class);
+                        storedScore = userInfo.getScore();
+                        storedGamesPlayed = userInfo.getGamesPlayed();
+                        Log.d(TAG, "Firebase score " + userInfo.toString());
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
+
+        Log.d(TAG, "onCreate() called");
     }
 
     private void initializeGame() {
+        Log.d(TAG, "initializeGame() called");
+        if (countDownTimer != null)
+            countDownTimer.cancel();
         generateQuestions();
         startTimer();
         resetUI();
     }
 
     @Override
+    protected void onRestart() {
+        Log.d(TAG, "onRestart() called");
+        super.onRestart();
+    }
+
+    @Override
     protected void onStop() {
-        super.onStop();
+        Log.d(TAG, "onStop() called");
         countDownTimer.cancel();
+        databaseReference.removeEventListener(valueEventListener);
+        super.onStop();
     }
 
     private void resetUI() {
-        gameOverFrameLayout.setVisibility(View.INVISIBLE);
-        scoreTextView.setText("0/0");
+        leaderBoardButton.setVisibility(View.INVISIBLE);
+        finalScoreTextView.setVisibility(View.INVISIBLE);
+        scoreTextView.setText("0");
         answerTextView.setVisibility(View.VISIBLE);
         answerTextView.setText("");
         for (int i = 0; i < answersGridButtons.getChildCount(); i++) {
@@ -142,7 +187,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void endGame() {
-        gameOverFrameLayout.setVisibility(View.VISIBLE);
+        //gameOverFrameLayout.setVisibility(View.VISIBLE);
+        leaderBoardButton.setVisibility(View.VISIBLE);
+        finalScoreTextView.setVisibility(View.VISIBLE);
         answerTextView.setVisibility(View.INVISIBLE);
         finalScoreTextView.setText("Your score: " + scoreTextView.getText());
         timerTextView.setText("0s");
@@ -153,18 +200,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateScore() {
-        if (!TextUtils.isEmpty(storedScore)) {
-            int previousScore = Integer.parseInt(storedScore.split("/")[0]);
-            int currentScore = Integer.parseInt(scoreTextView.getText().toString().split("/")[0]);
-            if (currentScore > previousScore) {
-                databaseReference.child(FirebaseAuth.getInstance().getUid())
-                        .setValue(scoreTextView.getText().toString());
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String uid = FirebaseAuth.getInstance().getUid();
+            int latestScore = Integer.parseInt(scoreTextView.getText().toString());
+            Map<String, Object> map = new HashMap<>();
+            map.put("gamesPlayed", ++storedGamesPlayed);
+            if (latestScore > storedScore) {
+                map.put("score", latestScore);
                 Log.d(TAG, "score updated " + scoreTextView.getText().toString());
             }
-        } else {
-            databaseReference.child(FirebaseAuth.getInstance().getUid())
-                    .setValue(scoreTextView.getText().toString());
-            Log.d(TAG, "score updated" + scoreTextView.getText().toString());
+            if (uid != null)
+                databaseReference.child(uid).updateChildren(map)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "Firebase: new high score is updated");
+                            }
+                        });
         }
     }
 
@@ -190,7 +242,34 @@ public class MainActivity extends AppCompatActivity {
         } else
             answerTextView.setText("Wrong!");
         questionCount++;
-        scoreTextView.setText(score + "/" + questionCount);
+        scoreTextView.setText(String.valueOf(score));
         generateQuestions();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            countDownTimer.cancel();
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                Intent intent = new Intent(GameActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy() called");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause() called");
+        super.onPause();
     }
 }

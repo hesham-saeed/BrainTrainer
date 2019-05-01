@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:padding="16dp"
-    tools:context=".MainActivity">
+    tools:context=".GameActivity">
+
     <TextView
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
@@ -14,15 +15,18 @@
         android:layout_alignParentStart="true"
         android:background="@color/yellow"
         android:padding="16dp"
+        android:textAlignment="center"
         android:text="30s"
-        android:textSize="32sp" />
+        android:textSize="28sp" />
+
     <TextView
         android:id="@+id/questionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:padding="16dp"
-        android:textSize="32sp" />
+        android:textSize="28sp" />
+
     <TextView
         android:id="@+id/scoreTextView"
         android:layout_width="wrap_content"
@@ -30,14 +34,18 @@
         android:layout_alignParentEnd="true"
         android:background="@color/orange"
         android:padding="16dp"
-        android:text="0/0"
-        android:textSize="32sp" />
+        android:textAlignment="center"
+        android:ems="2"
+        android:text="0"
+        android:textSize="28sp" />
+
     <GridLayout
         android:id="@+id/answersGridLayout"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_below="@id/timerTextView"
         android:layout_marginTop="24dp">
+
         <Button
             android:id="@+id/firstNumberButton"
             android:layout_width="0dp"
@@ -49,6 +57,7 @@
             android:background="@color/blue"
             android:onClick="submitAnswer"
             android:textSize="42sp" />
+
         <Button
             android:id="@+id/secondNumberButton"
             android:layout_width="0dp"
@@ -60,6 +69,7 @@
             android:background="@color/green"
             android:onClick="submitAnswer"
             android:textSize="42sp" />
+
         <Button
             android:id="@+id/thirdNumberButton"
             android:layout_width="0dp"
@@ -71,6 +81,7 @@
             android:background="@color/fuchsia"
             android:onClick="submitAnswer"
             android:textSize="42sp" />
+
         <Button
             android:id="@+id/fourthNumberButton"
             android:layout_width="0dp"
@@ -83,6 +94,7 @@
             android:onClick="submitAnswer"
             android:textSize="42sp" />
     </GridLayout>
+
     <TextView
         android:id="@+id/answerTextView"
         android:layout_width="wrap_content"
@@ -91,6 +103,35 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="8dp"
         android:textSize="42sp" />
+    <TextView
+        android:id="@+id/finalScoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/answersGridLayout"
+        android:text="You scored 4/15"
+        android:textSize="32sp" />
+
+    <Button
+        android:id="@+id/playAgainButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_above="@id/leaderBoardButton"
+        android:layout_marginBottom="12dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/refresh"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/leaderBoardButton"
+        android:padding="16dp"
+        android:background="@drawable/gradient_rectangle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="Leaderboard"
+        android:textAllCaps="false" />
     <FrameLayout
         android:id="@+id/gameOverFrameLayout"
         android:layout_width="wrap_content"
@@ -98,19 +139,7 @@
         android:layout_below="@id/answersGridLayout"
         android:layout_centerInParent="true"
         android:layout_marginTop="8dp">
-        <TextView
-            android:id="@+id/finalScoreTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your score is 4/15"
-            android:textSize="32sp" />
-        <Button
-            android:id="@+id/playAgainButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/finalScoreTextView"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:text="Play again" />
+
+
     </FrameLayout>
 </RelativeLayout>
