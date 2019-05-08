@@ -90,7 +90,7 @@ public class GameActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-                    builder.setMessage("You must be logged in");
+                    builder.setMessage("This feature is not available in Offline mode");
                     builder.setPositiveButton("OK", null);
                     builder.create().show();
                 } else {
