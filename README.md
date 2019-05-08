@@ -42,6 +42,11 @@ Train your brain by solving the highest number of math problems in 30 seconds.
 - I find <b>Firebase Authentication Exception</b> handling very intuitive here, that includes checking for: Internet connection, Weak passwords or Invalid credentials, with a user friendly message pointing where exactly the error is. 
 - A <code>ConstraintLayout</code> is used here to group these different components
 
+# Screenshots
+<img src="/images/HomeActivity.png" width="250" />        <img src="/images/RegistrationActivity.png" width="250" />
+<img src="/images/ProfileActivity.png" width="250" />  <img src="/images/GameActivity.png" width="250" />        <img src="/images/LeaderBoardActivity.png" width="250" />
+<img src="/images/ErrorMessage.png" width="250" />
+
 <h3> What more could be done in this project? </h3>
 
 - Adding diffculty modes for harder problems, you will find the QuestionBank class has some constants already defined for it.
