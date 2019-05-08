@@ -3,8 +3,7 @@ Train your brain by solving the highest number of math problems in 30 seconds.
 
 <h2>Introduction</h2>
 
-- The project is cloud connected using <b>Firebase Realtime database</b> and <b>Firebase Authentication</b>. I take care of resources optmiziation to avoid memory leaks and unncessary network requests. for instance: removing realtime db listeners when in no need.
-- The UI of the app is pretty acceptable.
+- The project is cloud connected using <b>Firebase Realtime database</b> and <b>Firebase Authentication</b>. I take care of resources maintenance to avoid memory leaks and unncessary network requests. for instance: removing realtime db listeners when in no need.
 - To use this project, you will need to create your own Firebase key from <a href="console.firebase.google.com">Firebase Console</a>
 
 <h2>Firebase Usage</h2>
